@@ -1,6 +1,6 @@
-# Word-it (Merchant Tools)
+# Word-it
 
-Word-it is a simple yet powerful web-based utility tool written in Go. It offers a unique Shakespearean translator alongside a standard English dictionary, making it a handy companion for writers, students, or anyone looking to add a touch of the Bard to their modern prose.
+Word-it is a simple web-based utility tool written in Go. It offers a unique Shakespearean translator alongside a standard English dictionary, making it a handy companion for writers, students, or anyone looking to add a touch of the Bard to their modern prose.
 
 ## Features
 
