@@ -1,93 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minimalist Dictionary</title>
+    <title>Merchant Tools</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <style>
-        :root {
-            --pico-spacing: 1rem;
-        }
         main {
             padding-top: 2rem;
             max-width: 800px;
         }
-        .definition-block {
-            border-left: 4px solid var(--pico-primary);
-            padding-left: 1.5rem;
+
+        .tab-state,
+        .tab-content {
+            display: none;
+        }
+
+        .menu-container {
+            display: flex;
+            gap: 1rem;
             margin-bottom: 2rem;
+            border-bottom: 1px solid var(--pico-muted-border-color);
         }
-        .part-of-speech {
-            font-style: italic;
-            color: var(--pico-secondary);
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+
+        .tab-label {
+            cursor: pointer;
+            padding: 0.5rem 0.75rem;
+            margin-bottom: -1px;
+            border-bottom: 2px solid transparent;
         }
-        .synonyms-chip {
-            display: inline-block;
-            padding: 0.2rem 0.6rem;
-            background: var(--pico-secondary-background);
-            border-radius: 5px;
-            font-size: 0.8rem;
-            margin-right: 0.5rem;
+
+        #tab1:checked~.menu-container label[for="tab1"],
+        #tab2:checked~.menu-container label[for="tab2"] {
+            border-bottom-color: var(--pico-primary);
+            color: var(--pico-primary);
+            font-weight: bold;
+        }
+
+        #tab1:checked~#content-dictionary,
+        #tab2:checked~#content-translator {
+            display: block;
         }
     </style>
 </head>
+
 <body>
-
     <main class="container">
-        <header>
-            <hgroup>
-                <h1>Dictionary</h1>
-                <p>Search for definitions, phonetics, and usage.</p>
-            </hgroup>
-        </header>
+        <input type="radio" name="tabs" id="tab1" class="tab-state" {{if eq .ActiveTab "1" }}checked{{end}}>
+        <input type="radio" name="tabs" id="tab2" class="tab-state" {{if eq .ActiveTab "2" }}checked{{end}}>
 
-        <form id="search-form">
-            <fieldset role="group">
-                <input 
-                    name="word" 
-                    type="text" 
-                    placeholder="Search for a word..." 
-                    aria-label="Search"
-                >
-                <input type="submit" value="Search">
-            </fieldset>
-        </form>
+        <div class="menu-container">
+            <label for="tab1" class="tab-label">Dictionary</label>
+            <label for="tab2" class="tab-label">Shakespearean</label>
+        </div>
 
-        <section id="result-container">
-            
-            <div class="word-meta">
-                <hgroup>
-                    <h2 id="word-title">Luminous</h2>
-                    <p id="phonetic-text">/ˈluː.mɪ.nəs/</p>
-                </hgroup>
-            </div>
-
+        <section id="content-dictionary" class="tab-content">
+            <form action="/definition" method="GET">
+                <fieldset role="group">
+                    <input name="word" type="text" placeholder="Search...">
+                    <input type="submit" value="Definition">
+                </fieldset>
+            </form>
+            {{if .Data.Definitions}}
             <article>
-                <div class="definition-block">
-                    <span class="part-of-speech">adjective</span>
-                    <p>Radiating or reflecting light; shining; bright.</p>
-                    <blockquote>"The luminous dial on his watch glowed in the dark."</blockquote>
-                </div>
-
-                <div class="definition-block">
-                    <span class="part-of-speech">adjective</span>
-                    <p>Very intellectual; enlightened.</p>
-                </div>
-
-                <footer>
-                    <strong>Synonyms:</strong><br>
-                    <span class="synonyms-chip">radiant</span>
-                    <span class="synonyms-chip">brilliant</span>
-                    <span class="synonyms-chip">lucid</span>
-                </footer>
+                <header>Definitions</header>
+                <ul>
+                    {{range .Data.Definitions}}
+                    <li>{{.}}</li>
+                    {{end}}
+                </ul>
             </article>
+            {{else if .Data.Error}}
+            <p style="color:red">{{.Data.Error}}</p>
+            {{end}}
+        </section>
 
+        <section id="content-translator" class="tab-content">
+            <form action="/translate" method="POST">
+                <label for="translate-input">Modern English</label>
+                <textarea name="translate-input" id="translate-input" rows="4">{{.Data.Sentence}}</textarea>
+                <button type="submit">Translate</button>
+            </form>
+
+            {{if or .Data.Translation .Data.Error}}
+            <article>
+                <header>Result</header>
+                {{if .Data.Translation}}<p><i>{{.Data.Translation}}</i></p>{{end}}
+                {{if .Data.Error}}<p style="color:red">{{.Data.Error}}</p>{{end}}
+            </article>
+            {{end}}
         </section>
     </main>
-
 </body>
+
 </html>
