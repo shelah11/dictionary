@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimalist Dictionary</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <style>
+        :root {
+            --pico-spacing: 1rem;
+        }
+        main {
+            padding-top: 2rem;
+            max-width: 800px;
+        }
+        .definition-block {
+            border-left: 4px solid var(--pico-primary);
+            padding-left: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .part-of-speech {
+            font-style: italic;
+            color: var(--pico-secondary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .synonyms-chip {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            background: var(--pico-secondary-background);
+            border-radius: 5px;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+
+    <main class="container">
+        <header>
+            <hgroup>
+                <h1>Dictionary</h1>
+                <p>Search for definitions, phonetics, and usage.</p>
+            </hgroup>
+        </header>
+
+        <form id="search-form">
+            <fieldset role="group">
+                <input 
+                    name="word" 
+                    type="text" 
+                    placeholder="Search for a word..." 
+                    aria-label="Search"
+                >
+                <input type="submit" value="Search">
+            </fieldset>
+        </form>
+
+        <section id="result-container">
+            
+            <div class="word-meta">
+                <hgroup>
+                    <h2 id="word-title">Luminous</h2>
+                    <p id="phonetic-text">/ˈluː.mɪ.nəs/</p>
+                </hgroup>
+            </div>
+
+            <article>
+                <div class="definition-block">
+                    <span class="part-of-speech">adjective</span>
+                    <p>Radiating or reflecting light; shining; bright.</p>
+                    <blockquote>"The luminous dial on his watch glowed in the dark."</blockquote>
+                </div>
+
+                <div class="definition-block">
+                    <span class="part-of-speech">adjective</span>
+                    <p>Very intellectual; enlightened.</p>
+                </div>
+
+                <footer>
+                    <strong>Synonyms:</strong><br>
+                    <span class="synonyms-chip">radiant</span>
+                    <span class="synonyms-chip">brilliant</span>
+                    <span class="synonyms-chip">lucid</span>
+                </footer>
+            </article>
+
+        </section>
+    </main>
+
+</body>
+</html>
